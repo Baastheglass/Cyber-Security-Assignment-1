@@ -202,6 +202,9 @@ y_val = val_data[' Label_BENIGN']
 x_train = x_train.replace([np.inf, -np.inf], np.nan)  # Convert Inf to NaN
 x_train = x_train.fillna(x_train.mean())  # Fill NaN with mean
 
+x_val = x_val.replace([np.inf, -np.inf], np.nan)  # Convert Inf to NaN
+x_val = x_val.fillna(x_val.mean())  # Fill NaN with mean
+
 #training the model
 model4.fit(x_train,y_train)
 
