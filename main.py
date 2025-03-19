@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
@@ -12,6 +13,7 @@ df = pd.read_csv('attack_dataset.csv')
 model = RandomForestClassifier()
 model2 = GradientBoostingClassifier()
 model3 = AdaBoostClassifier()
+model4 = DecisionTreeClassifier()
 encoder = OneHotEncoder()
 
 #feature engineering
@@ -90,10 +92,10 @@ sql_df[' Label_Web Attack � Sql Injection'] = df[' Label_Web Attack � Sql In
 train_data, temp = train_test_split(sql_df, test_size = 0.3)
 val_data, tmst_data = train_test_split(temp, test_size = 0.5)
 
-x_train = train_data.drop(' Label_Web Attack � Sql Injection')
+x_train = train_data.drop(columns=[' Label_Web Attack � Sql Injection'])
 y_train = train_data[' Label_Web Attack � Sql Injection']
 
-x_val = val_data.drop(' Label_Web Attack � Sql Injection')
+x_val = val_data.drop(columns=[' Label_Web Attack � Sql Injection'])
 y_val = val_data[' Label_Web Attack � Sql Injection']
 
 #training model
@@ -141,10 +143,10 @@ xss_df[' Label_Web Attack � XSS'] = df[' Label_Web Attack � XSS']
 train_data, temp = train_test_split(xss_df, test_size = 0.5)
 val_data, test_data = train_test_split(temp,test_size = 0.5)
 
-x_train = train_data.drop(' Label_Web Attack � XSS')
+x_train = train_data.drop(columns=[' Label_Web Attack � XSS'])
 y_train = train_data[' Label_Web Attack � XSS']
 
-x_val = val_data.drop(' Label_Web Attack � XSS')
+x_val = val_data.drop(columns=[' Label_Web Attack � XSS'])
 y_val = val_data[' Label_Web Attack � XSS']
 
 #training model
@@ -191,8 +193,44 @@ benign_df[' Label_BENIGN'] = df[' Label_BENIGN']
 train_data, temp = train_test_split(benign_df, test_size=0.3)
 val_data, test_data = train_test_split(temp, test_size=0.5)
 
-x_train = train_data.drop(' Label_BENIGN')
+x_train = train_data.drop(columns=[' Label_BENIGN'])
 y_train = train_data[' Label_BENIGN']
 
-x_val = val_data.drop(' Label_BENIGN')
+x_val = val_data.drop(columns=[' Label_BENIGN'])
 y_val = val_data[' Label_BENIGN']
+
+x_train = x_train.replace([np.inf, -np.inf], np.nan)  # Convert Inf to NaN
+x_train = x_train.fillna(x_train.mean())  # Fill NaN with mean
+
+#training the model
+model4.fit(x_train,y_train)
+
+#making predictions
+y_pred = model4.predict(x_val)
+
+#outputting results
+accuracy = accuracy_score(y_val, y_pred)
+report = classification_report(y_val,y_pred)
+
+print("Model Accuracy for XSS Web Attacks: ", accuracy)
+print("Classification Report for XSS Web Attacks", report)
+
+#confusion matrix
+cm = confusion_matrix(y_val,y_pred)
+plt.figure()
+sns.heatmap(cm, cmap='coolwarm', annot=True, fmt='d')
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
+#plt.show()
+
+#roc curve
+fpr, tpr, thresholds = roc_curve(y_val, y_pred)
+roc_auc = auc(fpr, tpr)
+plt.plot(fpr, tpr, label=f'ROC curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend()
+#plt.show()
