@@ -215,8 +215,8 @@ y_pred = model4.predict(x_val)
 accuracy = accuracy_score(y_val, y_pred)
 report = classification_report(y_val,y_pred)
 
-print("Model Accuracy for XSS Web Attacks: ", accuracy)
-print("Classification Report for XSS Web Attacks", report)
+print("Model Accuracy for Benign Attacks: ", accuracy)
+print("Classification Report for Benign Attacks", report)
 
 #confusion matrix
 cm = confusion_matrix(y_val,y_pred)
