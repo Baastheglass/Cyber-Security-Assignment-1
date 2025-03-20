@@ -60,8 +60,8 @@ y_pred = model.predict(x_val)
 accuracy = accuracy_score(y_val, y_pred)
 report = classification_report(y_val, y_pred)
 
-print("Model Accuracy for Brute Force Web Attacks: ", accuracy)
-print("Classification Report for Brute Force Web Attacks", report)
+print("Model Accuracy for Brute Force Web Attacks using Random Forest Classifier: ", accuracy)
+print("Classification Report for Brute Force Web Attacks using Random Forest Classifier: ", report)
 
 cm = confusion_matrix(y_val, y_pred)
 plt.figure()
@@ -109,8 +109,8 @@ y_pred = model2.predict(x_val)
 accuracy = accuracy_score(y_val, y_pred)
 report = classification_report(y_val, y_pred)
 
-print("Model Accuracy for SQL Injection Attacks: ", accuracy)
-print("Classification Report for SQL Injection Attacks", report)
+print("Model Accuracy for SQL Injection Attacks using Gradient Boosting Classifier: ", accuracy)
+print("Classification Report for SQL Injection Attacks using Gradient Boosting Classifer: ", report)
 
 cm = confusion_matrix(y_val, y_pred)
 plt.figure()
@@ -159,8 +159,8 @@ y_pred = model3.predict(x_val)
 accuracy = accuracy_score(y_val, y_pred)
 report = classification_report(y_val, y_pred)
 
-print("Model Accuracy for XSS Web Attacks: ", accuracy)
-print("Classification Report for XSS Web Attacks", report)
+print("Model Accuracy for XSS Web Attacks using Adaboost Classifier: ", accuracy)
+print("Classification Report for XSS Web Attacks using Adaboost Classifier: ", report)
 
 #confusion matrix
 cm = confusion_matrix(y_val, y_pred)
@@ -215,8 +215,8 @@ y_pred = model4.predict(x_val)
 accuracy = accuracy_score(y_val, y_pred)
 report = classification_report(y_val,y_pred)
 
-print("Model Accuracy for Benign Attacks: ", accuracy)
-print("Classification Report for Benign Attacks", report)
+print("Model Accuracy for Benign Attacks using Decision Tree Classifier: ", accuracy)
+print("Classification Report for Benign Attacks using Decision Tree Classifier: ", report)
 
 #confusion matrix
 cm = confusion_matrix(y_val,y_pred)
@@ -237,3 +237,4 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend()
 #plt.show()
+ 
